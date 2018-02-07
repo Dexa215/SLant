@@ -155,8 +155,8 @@ public Setting(Component c,Client x,String[]userdata)
 		textField_2.setBounds(208, 98, 137, 20);
 		panelChangePass.add(textField_2);
 		textField_2.setColumns(10);
-		textField_2.setEditable(false);
-		textField_2.setEnabled(false);
+		//textField_2.setEditable(false);
+		//textField_2.setEnabled(false);
 		
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
@@ -191,15 +191,67 @@ public Setting(Component c,Client x,String[]userdata)
 					System.out.println("email pw   : " + String.valueOf(getPasswordField().getPassword()));
 					
 					
+					
+					String combo;
+					
+					switch  (getComboBox().getSelectedItem().toString() ) {
+					case "local":
+						getComboBox().setSelectedIndex(0);
+						combo="local";
+						break;
+					
+					case "lan":
+						getComboBox().setSelectedIndex(1);
+						combo="lan";
+						break;
+							
+					case "www":
+						getComboBox().setSelectedIndex(2);
+						combo="www";
+						break;		
+					
+					default:
+						getComboBox().setSelectedIndex(0);
+						combo="local";
+						break;
+						
+						
+					}
+					String loc;
+					if (getTextField_2().getText().equals(null)){loc="127.0.0.1";}				else{loc=getTextField_2().getText();}
+					String lan;
+					if (getTextField_3().getText().equals(null)){lan="192.168.1.6";}			else{lan=getTextField_3().getText();}
+					String www;
+					if (getTextField_4().getText().equals(null)){www="dexa215.homepc.it";}		else{www=getTextField_4().getText();}
+					
+					String un;
+					if (getTextField_6().getText().equals(null)){un="USER NAME";}				else{un=getTextField_6().getText();}
+					String pw;
+					if (getPasswordField().getPassword().toString().equals(null)){pw="0000";}	else{pw=getPasswordField().getPassword().toString();}
+					
+					
 					MQ_Update.updateSetting(
-												getTextField_2().getText(),
-												getTextField_3().getText(),
-												getTextField_4().getText(),
-												getComboBox().getSelectedItem().toString(),
-												getTextField_6().getText(),
-												String.valueOf(getPasswordField().getPassword())
-																);
-
+												loc,
+												lan,
+												www,
+												combo,
+												un,
+												pw		);
+					
+					
+					
+					System.out.println(getTextField_2().getText());
+					System.out.println(getTextField_3().getText());
+					System.out.println(getTextField_4().getText());
+					System.out.println(getComboBox().getSelectedItem().toString());
+					
+					System.out.println(getTextField_6().getText());
+					System.out.println(getPasswordField().getPassword().toString());
+					
+					
+					
+					
+					
 					Object x = getComboBox().getSelectedItem();
 					me.getStartWindow().getComboBox().setSelectedItem(x);
 					me.getStartWindow().aggiornaSrvType(x);
@@ -254,27 +306,46 @@ public Setting(Component c,Client x,String[]userdata)
 	}
 //********************************************************	
 	public void setf(String[]userd) {
-		getTextField_2().setText(userd[0]);
-		getTextField_3().setText(userd[1]);
-		getTextField_4().setText(userd[2]);
-		switch (userd[3]) {	
-			case "local":
-				getComboBox().setSelectedIndex(0);
-				break;
+		
+		if (userd[0].equals("Nessun Dato")) {
 			
-			case "lan":
-				getComboBox().setSelectedIndex(1);
-				break;
-					
-			case "www":
-				getComboBox().setSelectedIndex(2);
-				break;		
+			getTextField_2().setText("127.0.0.1");
+			getTextField_3().setText("0.0.0.0");
+			getTextField_4().setText("0.0.0.0");
 			
-			default:
-				break;
+			getComboBox().setSelectedIndex(0);
+			
+			getTextField_6().setText("inserire email...");
+	
+		}else {
+			
+			getTextField_2().setText(userd[0]);
+			getTextField_3().setText(userd[1]);
+			getTextField_4().setText(userd[2]);
+			switch (userd[3]) {	
+				case "local":
+					getComboBox().setSelectedIndex(0);
+					break;
+				
+				case "lan":
+					getComboBox().setSelectedIndex(1);
+					break;
+						
+				case "www":
+					getComboBox().setSelectedIndex(2);
+					break;		
+				
+				default:
+					break;
+			}
+			getTextField_6().setText(userd[4]);
+			getPasswordField().setText(userd[5]);
+			
+			
 		}
-		getTextField_6().setText(userd[4]);
-		getPasswordField().setText(userd[5]);
+		
+		
+		
 	}
 //********************************************************	
 	public JPasswordField getPasswordField() {

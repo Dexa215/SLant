@@ -443,6 +443,15 @@ public class MQ_Update {
 										String emailPW) 	throws SQLException
 	{	
 
+	System.out.println(" 	alla q arrivano...  ");
+	
+	System.out.println(localhost+"\n"+lan+"\n"+www+"\n"+srvtype+"\n"+emailUSER+"\n"+emailPW);
+	
+	
+	
+	
+	
+		
 		String query1 = "UPDATE setting SET "
 						+ "local_host 		= '" + localhost + "', "
 						+ "lan 				= '" + lan + "' , "
@@ -450,10 +459,14 @@ public class MQ_Update {
 						+ "srvtype 			= '" + srvtype + "' , "
 						+ "email 			= '" + emailUSER + "' , "
 						+ "password 		= '" + emailPW +"'";
-    	
-		DBmanager.openConnection();
+    	try {
+			DBmanager.openConnection();
 		DBmanager.executeUpdate(query1);
-		DBmanager.closeConnection();
+		DBmanager.closeConnection();	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	
 	}
 	
 		

@@ -22,14 +22,8 @@ public class Server {
 	private boolean			dbOK=false;
 	
 	public Server(){
-		setR(new Requests(10));
-		setG(new Guardian(this,getR()));
-		try {
-			new Thread(getG()).start();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("problemi con creazione Guardian");
-		}
+
+		
 	}
 	public static void main(String[] args) throws Exception {
 		me = new Server();
@@ -37,10 +31,21 @@ public class Server {
 		
 		setMeG(new SystemServer(me));
 		getMeG().getFrame().setVisible(true);
+				
 		
 		ServerSocket serverSocket = new ServerSocket(IServer.PORT);
 		System.out.println(msg = "xxx schoolLib Server Started: \n" + serverSocket);
 		getMeG().addMsg(msg);
+
+		me.setR(new Requests(10));
+		me.setG(new Guardian(me,me.getR()));
+		try {
+			new Thread(me.getG()).start();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("problemi con creazione Guardian");
+		}
+		
 		
 	    while(true){
 	    	try {

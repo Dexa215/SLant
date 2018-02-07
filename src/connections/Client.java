@@ -159,7 +159,7 @@ public class Client implements Serializable, Runnable  {
 					x.getStartWindow().addMsg("Initialize...");	
 					//new Thread(srvx).start();	//Server
 					
-					new Thread(x).start();	  // Logica di controllo comandi ricevuti
+					new Thread(x).start();	  // Logica di controllo comandi ricevuti					
 					new Thread(y1).start();  // Client Connection Controller [CCC]	
 					
 					

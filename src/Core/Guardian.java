@@ -50,7 +50,7 @@ public class Guardian implements Runnable {
 			
 			if ((datacorrente.getTime()-dataultimocontrollo.getTime())>30000) {				//controllo otni 30 secondi PER TEST	
 					
-				System.err.println("passati 5 secondi, controllo scadenze prestiti");				
+				System.err.println("passati 30 secondi, controllo scadenze prestiti");				
 				dataultimocontrollo = c.getTime();
 				
 				//PROCEDURE CONTROLLO SCADENZE

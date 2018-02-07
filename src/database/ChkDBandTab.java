@@ -28,17 +28,21 @@ public class ChkDBandTab {
 		     connection = DriverManager.getConnection(DB_URL,USER,PASS);
 		     ResultSet resultSet = connection.getMetaData().getCatalogs();
 		    
-						    if(!resultSet.next()){
+						   
+		     
+		     
+		     
+		     if(!resultSet.next()){
 						    	 
 						    statement = connection.createStatement();
 						    
-						    String sql =  " CREATE DATABASE IF NOT EXISTS schoolib ";
+						    String sql =  "CREATE DATABASE IF NOT EXISTS schoolib";
 						    
 						    statement.executeUpdate(sql);
 						    	System.out.println("Database created!");
-						    	//mb.setText("SRV :> DATABASE CREATO");
+						    	mb.setText("SRV :> DATABASE CREATO");
 						    	
-						     }
+			}
 						    
 		
 		
@@ -46,18 +50,21 @@ public class ChkDBandTab {
 					   if (sqlException.getErrorCode() == 1007) {
 
 					    	System.out.println("SYS :> DATABASE ALREADY EXIST");
-					    	
+					    	mb.setText("SRV :> DATABASE esistente");
 					    	
 					    } else {
 					     
 					   System.out.println("SYS :> OTHER PROBLEMS");
 					       System.out.println("SYS :> "+sqlException.getErrorCode());					        
 					    sqlException.printStackTrace();
+					    mb.setText("SRV :> DATABASE NG");
  
 					  }
 		  }   catch (ClassNotFoundException e) {
 
 			System.out.println("SYS :> class not found");
+			
+			mb.setText("SRV :> DATABASE NG");
 		}
 		return mb;
 		 

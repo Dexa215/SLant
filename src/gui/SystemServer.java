@@ -1,5 +1,11 @@
 package gui;
 import connections.*;
+import database.CheckDBSetting;
+import database.ChkDBandTab;
+import database.DBmanager;
+import database.MQ_Insert;
+import database.MQ_Update;
+
 import java.awt.Color;
 import javax.swing.DropMode;
 import javax.swing.JFrame;
@@ -9,6 +15,7 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class SystemServer {
@@ -70,21 +77,112 @@ public class SystemServer {
 		btnNewButton.setBounds(27, 334, 442, 23);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("metodo 2");
+		JButton btnNewButton_1 = new JButton("crea batabase schoolib");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				int ok = 0;
+				
+				try {
+					DBmanager.openConnectionFirst();
+					
+					String query = "create database schoolib;";
+					DBmanager.executeUpdate(query);
+					ok=2;
+					
+					DBmanager.closeConnection();
+					
+				}catch (SQLException ee) {
+					ok=1;
+					System.out.println("err sql"+ee.getErrorCode());
+					//ee.printStackTrace();
+					try {
+						DBmanager.closeConnection();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (Exception e) {						
+					//e.printStackTrace();
+					System.out.println("err gen");
+					try {
+						DBmanager.closeConnection();
+					} catch (SQLException ea) {
+						
+						ea.printStackTrace();
+					}
+				}
+				
+
+				
+				if(ok!=0) {
+					
+					try {
+					DBmanager.openConnection();
+					CheckDBSetting.TableExistSetting();
+					} catch (Exception e) {
+						try {
+						DBmanager.closeConnection();
+						} catch (SQLException e1) {
+						e1.printStackTrace();
+						}
+					}
+					
+					try {
+					DBmanager.openConnection();
+					ChkDBandTab.tableExistPerson();
+					} catch (Exception e) {
+						try {
+						DBmanager.closeConnection();
+						} catch (SQLException e1) {
+						e1.printStackTrace();
+						}
+					}
+					
+					try {
+					DBmanager.openConnection();
+					ChkDBandTab.tableExistBook();
+					} catch (Exception e) {
+						try {
+						DBmanager.closeConnection();
+						} catch (SQLException e1) {
+						e1.printStackTrace();
+						}
+					}
+					
+					try {
+					DBmanager.openConnection();
+					ChkDBandTab.tableExistLoans();
+					} catch (Exception e) {
+						try {
+						DBmanager.closeConnection();
+						} catch (SQLException e1) {
+						e1.printStackTrace();
+						}
+					}
+
+					try {
+					DBmanager.openConnection();
+					ChkDBandTab.tableExistBooking();
+					} catch (Exception e) {
+						try {
+						DBmanager.closeConnection();
+						} catch (SQLException e1) {
+						e1.printStackTrace();
+						}
+					}	
+					
+					
+				}else {
+					
+				} 
+					
+
+				
 			}
 		});
-		btnNewButton_1.setBounds(27, 368, 89, 23);
+		btnNewButton_1.setBounds(27, 368, 442, 23);
 		frame.getContentPane().add(btnNewButton_1);
-		
-		JButton btnNewButton_2 = new JButton("metodo 3");
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton_2.setBounds(27, 402, 89, 23);
-		frame.getContentPane().add(btnNewButton_2);
 	}
 
 	

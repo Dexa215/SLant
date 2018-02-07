@@ -26,7 +26,14 @@ public class DBmanager {
 		String password="postgres";
 		connection = DriverManager.getConnection(url,username,password);
 	}
-	
+	public static void 		openConnectionFirst() 			throws SQLException
+	{
+		
+		String url ="jdbc:postgresql://localhost:5432/";
+		String username="postgres";
+		String password="postgres";
+		connection = DriverManager.getConnection(url,username,password);
+	}	
 	public static void 		closeConnection() 			throws SQLException
 	{	
 		connection.close();

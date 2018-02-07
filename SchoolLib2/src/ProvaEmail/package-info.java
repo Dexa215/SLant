@@ -1,5 +1,0 @@
-/**
- * @author Mauro
- *
- */
-package ProvaEmail;

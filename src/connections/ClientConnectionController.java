@@ -25,6 +25,9 @@ public class ClientConnectionController implements Runnable {
 	public void run() {
 		try {
 			System.out.println("CCC :> Operativo");
+			
+			Thread.sleep(30000);
+			
 			Logica();
 		} catch (Exception e) {
 			System.out.println("CCC :> Problemi con Lancio CCC ");
