@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="run" name="SchoolLib2">
+	
+	<!-- init -->
+	<target name="init">
+		<property name="." 				location=	"classes" />
+		<property name="java.dir" 		location=	"src" />																	
+		<property name="javadoc.dir" 	location=	"doc/api" />																				
+		<property name="project.name" 	value=		"${ant.project.name}"/>																			
+		<property name="build.dir" 		location=	"bin" />
+		<property name="classes.dir" 	value=		"bin" />																				
+		<property name="src.dir" 		value=		"." />																				
+		<property name="base.dir" 		value=		"."/>																		
+		<property name="lib" 			value=		"lib"	/>		
+		<property name="server.jar" 	location=	"Server.jar"  />																			
+		<property name="client.jar" 	location=	"Client.jar"  />				
+		<property name="sql.driver" value="org.postgresql.Driver"/>
+		<property name="sql.url" value="jdbc:postgresql://localhost:5432/schoolib"/>
+		<property name="sql.user" value="postgres"/>
+		<property name="sql.pass" value="postgres"/>	
+	</target>
+	
+	<!-- compile -->
+	<target depends="init" name="compile">
+		
+		<path id="build.classpath">
+		     	<!--fileset dir="${build.dir}" includes="**/*.jar"/-->
+				<fileset dir="${lib}" includes="**/*.jar"/>
+		</path>			
+		<path id="runPath">
+				<fileset dir="${build.dir}" includes="*.jar"/>
+				<fileset dir="${lib}" includes="*.jar" />
+		</path>
+		
+		<mkdir dir="${classes.dir}" />
+		<javac srcdir="${src.dir}" includeantruntime="false" destdir="${base.dir}/bin" debug="true" deprecation="true" >
+		
+		<!-- compilerarg value ="-Xlint:unchecked"/-->
+			
+		<classpath>
+				<pathelement path="lib/javax.mail.jar"/>				
+				<pathelement path="lib/postgresql-42.0.0.jre7.jar"/>		      	
+		</classpath>	
+		</javac>
+	</target>
+	
+	<!-- jar -->
+	<target name="jar" depends="init,compile" >
+		
+		<jar basedir="${classes.dir}" compress="true" jarfile="${server.jar}">
+			<manifest>
+				<attribute name="Main-Class" value="connections.Server" />
+			</manifest>	
+		</jar>
+				
+		<jar basedir="${classes.dir}" compress="true" jarfile="${client.jar}">
+			<manifest>
+				<attribute name="Main-Class" value="connections.Client" />
+			</manifest>
+		</jar>
+	</target>
+
+	<!-- default -->
+	<target name="default" depends="init,jar,javadoc" description="Build Everything"  />
+
+	<!-- javadoc 	-->
+	<target name="javadoc" depends="init" description="Javadoc for my API" >
+		
+		
+		
+		<mkdir dir="${javadoc.dir}" />
+		
+		<javadoc 
+			packagenames="src" 
+			sourcepath="${java.dir}" 
+			destdir="${javadoc.dir}"  >
+			
+
+				<classpath>
+						<pathelement path="lib/javax.mail.jar"/>				
+						<pathelement path="lib/postgresql-42.0.0.jre7.jar"/>		      	
+				</classpath>	
+			   
+
+			       <fileset dir="${java.dir}">
+			                <include name="*/*.java"/>
+			       </fileset>
+			
+			
+<!--
+			<sourcepath>
+				<pathelement location="${src.dir}" />
+			</sourcepath>
+-->			
+		</javadoc>
+		
+		
+	</target>
+
+	
+
+	
+	
+	
+	
+
+	 <!-- run -->
+	  <target  name="run" depends="jar,javadoc" description="Esecuzione">
+	    <parallel>
+		      <java classname="connections.Server" fork="true">
+		      <classpath>
+		        <path refid="build.classpath" />
+		        <pathelement location="${classes.dir}" />
+		      </classpath>
+		    </java>
+	      
+	      <sleep seconds="1" />
+	      
+			<java classname="connections.Client" fork="true">
+			      <classpath>
+			        <path refid="build.classpath" />
+			        <pathelement location="${classes.dir}" />
+			      </classpath>
+			      	 </java>
+			
+		</parallel>      	
+	  </target>
+	
+</project>
