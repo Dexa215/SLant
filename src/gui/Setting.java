@@ -182,6 +182,10 @@ public Setting(Component c,Client x,String[]userdata)
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
+				
+				
+				
 				try {
 
 					me.setActW(me.getStartWindow());

@@ -27,6 +27,8 @@ public class SystemServer {
 	private JFrame frame;
 	private JTextArea text;
 	
+
+	
 	public SystemServer(Server mme) throws Exception {
 		setMe(mme);
 		initialize();
@@ -212,7 +214,115 @@ public class SystemServer {
 		this.me = me;
 	}
 	
+	public void checkdb() {
 	
+	int ok = 0;
+	
+	try {
+		DBmanager.openConnectionFirst();
+		
+		String query = "create database schoolib;";
+		DBmanager.executeUpdate(query);
+		ok=2;
+		DBmanager.closeConnection();
+		
+	}catch (SQLException ee) {
+		ok=1;
+		System.out.println("err sql"+ee.getErrorCode());
+		//ee.printStackTrace();
+		try {
+			DBmanager.closeConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} catch (Exception e) {						
+		//e.printStackTrace();
+		System.out.println("err gen");
+		try {
+			DBmanager.closeConnection();
+		} catch (SQLException ea) {
+			
+			ea.printStackTrace();
+		}
+	}
+	
+
+	
+	if(ok!=0) {
+		
+		ok=1;
+		
+		try {
+		DBmanager.openConnection();
+		CheckDBSetting.TableExistSetting();
+		} catch (Exception e) {
+			try {
+			DBmanager.closeConnection();
+			} catch (SQLException e1) {			
+				ok--;	
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+		DBmanager.openConnection();
+		ChkDBandTab.tableExistPerson();
+		} catch (Exception e) {
+			try {
+			DBmanager.closeConnection();
+			} catch (SQLException e1) {
+				ok--;	
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+		DBmanager.openConnection();
+		ChkDBandTab.tableExistBook();
+		} catch (Exception e) {
+			try {
+			DBmanager.closeConnection();
+			} catch (SQLException e1) {
+				ok--;
+				e1.printStackTrace();
+			}
+		}
+		
+		try {
+		DBmanager.openConnection();
+		ChkDBandTab.tableExistLoans();
+		} catch (Exception e) {
+			try {
+			DBmanager.closeConnection();
+			} catch (SQLException e1) {
+				ok--;
+				e1.printStackTrace();
+			}
+		}
+
+		try {
+		DBmanager.openConnection();
+		ChkDBandTab.tableExistBooking();
+		} catch (Exception e) {
+			try {
+			DBmanager.closeConnection();
+			} catch (SQLException e1) {
+				ok--;
+				e1.printStackTrace();
+			}
+		}	
+		
+		if(ok==1)me.setDbOK(true);
+		
+	}else {
+		me.setDbOK(false);// db non creato, sollevata eccezione in creazione non dovuta a db gia esistente
+		
+	}
+		
+
+	
+}
 	
 	
 	

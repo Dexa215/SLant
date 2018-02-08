@@ -21,6 +21,8 @@ public class Server {
 
 	private boolean			dbOK=false;
 	
+	
+	
 	public Server(){
 
 		
@@ -31,6 +33,15 @@ public class Server {
 		
 		setMeG(new SystemServer(me));
 		getMeG().getFrame().setVisible(true);
+		
+		while(!me.isDbOK()) {
+			Thread.sleep(1000);
+			getMeG().checkdb();
+			getMeG().addMsg("SRV :> controllo db in corso...");
+		}
+		
+		getMeG().addMsg("SRV :> controllo db OK ");
+		
 				
 		
 		ServerSocket serverSocket = new ServerSocket(IServer.PORT);
