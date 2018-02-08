@@ -116,15 +116,6 @@ public class MQ_Update {
 		System.out.println(92);
 	}
 
-	
-		
-		
-	
-		
-	
-
-		
-		
 		return prestitiaggiornati;
 		
 	}
@@ -442,31 +433,107 @@ public class MQ_Update {
 										String emailUSER, 
 										String emailPW) 	throws SQLException
 	{	
-
-	System.out.println(" 	alla q arrivano...  ");
+		String localhostMe= localhost;  
+		String lanMe = lan; 
+		String wwwMe = www;  
+		String srvtypeMe = srvtype; 
+		String emailUSERMe = emailUSER;
+		String emailPWMe = emailPW;
 	
-	System.out.println(localhost+"\n"+lan+"\n"+www+"\n"+srvtype+"\n"+emailUSER+"\n"+emailPW);
+	  if(localhost.equals("") || localhost.equals(null))
+	  {
+		  localhostMe="127.0.0.1";
+	  }
+	  if(lan.equals("") || lan.equals(null))
+	  {
+		  lanMe="0.0.0.0";
+	  }
+	  if(www.equals("") ||  www.equals(null))
+	  {
+		  wwwMe="0.0.0.0";
+	  }
+	  if(srvtype.equals("")  || srvtype.equals(null))
+	  {
+		  srvtypeMe="local";
+	  }
+	  if(emailUSER.equals("") || emailUSER.equals(null))
+	  {
+		  emailUSERMe="inserire username";
+	  }
+	  if(emailPW.equals("")  || emailPW.equals(null))
+	  {
+		  emailPWMe="inserire password";
+	  }
+	  String query = "SELECT count(local_host) FROM setting;";
+	  DBmanager.openConnection();
+	  ResultSet rs = DBmanager.executeQuery(query);
+	  
+	  int count=0;
+	  
+	  if (!rs.isBeforeFirst()) 
+	  {
+	   count =0;
+	  }
+	  else
+	  {
+		 rs.next();
+		 count = rs.getInt(1);
+	  
+	  }
+	  
+	  rs.close();
+	  DBmanager.closeConnection();
+	  
+	// Eseguo controllo 
 	
-	
-	
-	
-	
+	if(count !=0){
 		
 		String query1 = "UPDATE setting SET "
-						+ "local_host 		= '" + localhost + "', "
-						+ "lan 				= '" + lan + "' , "
-						+ "www 				= '" + www + "' , "
-						+ "srvtype 			= '" + srvtype + "' , "
-						+ "email 			= '" + emailUSER + "' , "
-						+ "password 		= '" + emailPW +"'";
-    	try {
+				+ "local_host 		= '" + localhost + "', "
+				+ "lan 				= '" + lan + "' , "
+				+ "www 				= '" + www + "' , "
+				+ "srvtype 			= '" + srvtype + "' , "
+				+ "email 			= '" + emailUSER + "' , "
+				+ "password 		= '" + emailPW +"'";
+        try {
+        	
+          DBmanager.openConnection();
+          DBmanager.executeUpdate(query1);
+          DBmanager.closeConnection();	
+          
+            } catch (Exception e) {
+	         e.printStackTrace();
+	         
+          }
+	}
+	else
+	{
+    								
+    	    localhost=	"127.0.0.1";
+    		lan=		"192.168.0.1";
+    		www=		"dexa215.homepc.it";
+    		srvtype=	"local";
+    		emailUSER=null;
+    		emailPW= null;
+
+    		 query = "INSERT INTO setting("
+    				+ "local_host, "
+    				+ "lan,"
+    				+ "www, "
+    				+ "srvType,"
+    				+ "email,"
+    				+ "password)"
+    				+ "VALUES('" 		+ localhost	    + "' , '"
+    									+ lan		        + "' , '" 
+    									+ www		        + "' , '" 
+    									+ srvtype		    + "' , '" 
+    									+ emailUSER		        + "' , '" 
+    		                            + emailPW	 	    + "')";
+    		
 			DBmanager.openConnection();
-		DBmanager.executeUpdate(query1);
-		DBmanager.closeConnection();	
-		} catch (Exception e) {
-			e.printStackTrace();
+			DBmanager.executeUpdate(query);
+			DBmanager.closeConnection();
 		}
-	
 	}
 	
 		
@@ -502,6 +569,24 @@ public class MQ_Update {
 	DBmanager.executeUpdate(query1);
 	DBmanager.closeConnection();
 	}		
-	
-	
+		
+		
+		
+		public static void updateSetting() throws SQLException
+		{					
+			String local_host=	"127.0.0.1";
+			String lan=			"192.168.0.1";
+			String www=			"dexa215.homepc.it";
+			String srvType=		"local";
+			String email=		"--";
+			String password=	"--";
+			
+			String q = "UPDATE setting SET local_host = '"+local_host+"',lan ='"+lan+"',www='"+www+"',srvType='"+srvType+"',email='"+email+"',password='"+password+"';";
+	    	
+			
+			DBmanager.openConnection();
+			DBmanager.executeUpdate(q);
+			DBmanager.closeConnection();
+		}
+
 }

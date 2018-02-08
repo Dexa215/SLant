@@ -53,7 +53,6 @@ public class DBmanager {
 	}
 	public static void 		executeUpdate(String query) throws SQLException
 	{
-
 		PreparedStatement stmt = connection.prepareStatement(query);
 		stmt.executeUpdate();
 	}	
